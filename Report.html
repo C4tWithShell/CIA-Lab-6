@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>
+        CIA Lab 6 - Web Servers  and Directory Service - HackMD
+    </title>
+    <link rel="icon" type="image/png" href="https://hackmd.io/favicon.png">
+    <link rel="apple-touch-icon" href="https://hackmd.io/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css" integrity="sha256-QiWfLIsCT02Sdwkogf6YMiQlj4NE84MKkzEMkZnMGdg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@hackmd/emojify.js@2.1.0/dist/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i|Source+Code+Pro:300,400,500|Source+Sans+Pro:300,300i,400,400i,600,600i|Source+Serif+Pro&subset=latin-ext);.hljs{display:block;background:#fff;padding:.5em;color:#333;overflow-x:auto}.hljs-comment,.hljs-meta{color:#969896}.hljs-emphasis,.hljs-quote,.hljs-string,.hljs-strong,.hljs-template-variable,.hljs-variable{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-attribute,.hljs-bullet,.hljs-literal,.hljs-number,.hljs-symbol{color:#0086b3}.hljs-built_in,.hljs-builtin-name{color:#005cc5}.hljs-name,.hljs-section{color:#63a35c}.hljs-tag{color:#333}.hljs-attr,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id,.hljs-selector-pseudo,.hljs-title{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}.markdown-body{font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{font-size:16px;padding:0 1em;color:#777;border-left:.25em solid #ddd}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body kbd,.popover kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid #ccc;border-bottom-color:#bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.markdown-body h1 .octicon-link,.markdown-body h2 .octicon-link,.markdown-body h3 .octicon-link,.markdown-body h4 .octicon-link,.markdown-body h5 .octicon-link,.markdown-body h6 .octicon-link{color:#000;vertical-align:middle;visibility:hidden}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .octicon-link,.markdown-body h2:hover .anchor .octicon-link,.markdown-body h3:hover .anchor .octicon-link,.markdown-body h4:hover .anchor .octicon-link,.markdown-body h5:hover .anchor .octicon-link,.markdown-body h6:hover .anchor .octicon-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{padding-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:0;padding-top:.2em;padding-bottom:.2em;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\00a0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0 none}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important;position:relative}.markdown-body .emoji{vertical-align:top}.markdown-body pre{border:inherit!important}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.markdown-body code[data-gist-id]{background:none;padding:0}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram,.markdown-body pre.vega{text-align:center;background-color:inherit;border-radius:0;white-space:inherit;overflow:visible}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code,.markdown-body pre.vega>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg,.markdown-body pre.vega>svg{max-width:100%;height:100%}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body .mark,.markdown-body mark{background-color:#fff1a7}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.figma{display:table;position:relative;width:100%;padding-bottom:56.25%}.figma iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%;border:1px solid #eee}.MJX_Assistive_MathML{display:none}#MathJax_Message{z-index:1000!important}.ui-infobar{position:relative;z-index:2;max-width:760px;margin:25px auto -25px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:998}.ui-toc.both-mode{margin-left:8px}.ui-toc.both-mode .ui-toc-label{height:40px;padding:10px 4px;border-top-left-radius:0;border-bottom-left-radius:0}.ui-toc-label{background-color:#e6e6e6;border:none;color:#868686;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff;transition:opacity .2s}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;transition:opacity .2s}.ui-toc-dropdown{margin-top:20px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child>ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif}html[lang^=ja] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html[lang=zh-tw] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html[lang=zh-cn] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}html .markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html .markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html .markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}html[lang^=ja] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,ＭＳ\ Ｐゴシック,sans-serif}html[lang=zh-tw] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,微軟正黑UI,sans-serif}html[lang=zh-cn] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,微软雅黑UI,sans-serif}html .ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,ＭＳ\ Ｐゴシック,sans-serif}html .ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,微軟正黑UI,sans-serif}html .ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,微软雅黑UI,sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:50%;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:cover}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}.ui-infobar>small>span{line-height:22px}.ui-infobar>small .dropdown{display:inline-block}.ui-infobar>small .dropdown a:focus,.ui-infobar>small .dropdown a:hover{text-decoration:none}.ui-more-info{color:#888;cursor:pointer;vertical-align:middle}.ui-more-info .fa{font-size:16px}.ui-connectedGithub,.ui-published-note{color:#888}.ui-connectedGithub{line-height:23px;white-space:nowrap}.ui-connectedGithub a.file-path{color:#888;text-decoration:none;padding-left:22px}.ui-connectedGithub a.file-path:active,.ui-connectedGithub a.file-path:hover{color:#888;text-decoration:underline}.ui-connectedGithub .fa{font-size:20px}.ui-published-note .fa{font-size:20px;vertical-align:top}.unselectable{-webkit-user-select:none;-o-user-select:none;user-select:none}.selectable{-webkit-user-select:text;-o-user-select:text;user-select:text}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}.site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,sans-serif}html[lang^=ja] .site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html[lang=zh-tw] .site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html[lang=zh-cn] .site-ui-font{font-family:Source Sans Pro,Helvetica,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;letter-spacing:.025em;font-family:Source Sans Pro,Helvetica,Arial,sans-serif}html[lang^=ja] body{font-family:Source Sans Pro,Helvetica,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html[lang=zh-tw] body{font-family:Source Sans Pro,Helvetica,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html[lang=zh-cn] body{font-family:Source Sans Pro,Helvetica,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}abbr[title]{border-bottom:none;text-decoration:underline;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}abbr[data-original-title],abbr[title]{cursor:help}body.modal-open{overflow-y:auto;padding-right:0!important}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="doc" class="markdown-body container-fluid comment-inner comment-enabled" data-hard-breaks="true"><h1 id="CIA-Lab-6---Web-Servers-and-Directory-Service" data-id="CIA-Lab-6---Web-Servers-and-Directory-Service" data-original-title="" title=""><a class="anchor hidden-xs" href="#CIA-Lab-6---Web-Servers-and-Directory-Service" title="CIA-Lab-6---Web-Servers-and-Directory-Service"><span class="octicon octicon-link"></span></a><span>CIA Lab 6 - Web Servers  and Directory Service</span></h1><p><strong><span>Name: Vladimir Shelkovnikov</span></strong></p><hr><h1 id="Section-1Web-Server" data-id="Section-1Web-Server"><a class="anchor hidden-xs" href="#Section-1Web-Server" title="Section-1Web-Server"><span class="octicon octicon-link"></span></a><span>Section 1:Web Server</span></h1><div class="alert alert-info">
+<p><span>In this section of the lab, you will learn how to deploy and configure the web service. You will also learn best security practices such as enabling and tuning SSL/TLS and playing with your web server security.</span><br>
+<span>Choose one of the below web servers.</span><br>
+<span>➢ Apache</span><br>
+<span>➢ Nginx</span><br>
+<span>➢ lighttpd</span></p>
+</div><h2 id="Task-1---Install-amp-Configure-Virtual-Hosts" data-id="Task-1---Install-amp-Configure-Virtual-Hosts"><a class="anchor hidden-xs" href="#Task-1---Install-amp-Configure-Virtual-Hosts" title="Task-1---Install-amp-Configure-Virtual-Hosts"><span class="octicon octicon-link"></span></a><span>Task 1 - Install &amp; Configure Virtual Hosts</span></h2><div class="alert alert-success">
+<ol>
+<li><span>Fetch, verify, build and install the webserver daemon from the source.</span></li>
+</ol>
+<blockquote>
+<p><span>Note: Some features of your web server may be built-in or modularized. Enable at least SSL/TLS during your installation.</span></p>
+</blockquote>
+<ol start="2">
+<li><span>Define the root directory and then two virtual hosts (and configure DNS records or wildcard accordingly):</span><br>
+<a href="http://aaa.stX.sne21.ru" target="_blank" rel="noopener"><span>aaa.stX.sne21.ru</span></a><br>
+<a href="http://bbb.stX.sne21.ru" target="_blank" rel="noopener"><span>bbb.stX.sne21.ru</span></a></li>
+<li><span>Create a simple, unique HTML page for each virtual host to make sure that the server can correctly serve it.</span></li>
+</ol>
+<h4 id="Testing" data-id="Testing"><a class="anchor hidden-xs" href="#Testing" title="Testing"><span class="octicon octicon-link"></span></a><span>Testing:</span></h4>
+<ol start="4">
+<li><span>Check the configuration syntax, start the daemon and enable it at boot time.</span></li>
+<li><span>Use curl to display the contents of a full HTTP/1.1 session served by your server.</span></li>
+<li><span>Explain the meaning of each request and reply header</span></li>
+</ol>
+</div><hr><h2 id="Install" data-id="Install"><a class="anchor hidden-xs" href="#Install" title="Install"><span class="octicon octicon-link"></span></a><span>Install</span></h2><p><span>I downloaded Nginx and verified it (Figure 1)</span></p><center>
+<p><img src="https://i.imgur.com/18dknSy.png" alt="" loading="lazy"><br>
+<span>Figure 1 - Verification of Nginx</span></p>
+</center><p><span>Then I install it using following options:</span></p><p><span>-prefix=/etc/nginx - installation folder</span><br>
+<span>-user=nginx</span><br>
+<span>-group=nginx</span><br>
+<span>-with-http_ssl_module - enabling ssl support</span><br>
+<span>-with-http_realip_module - enabling realip support</span><br>
+<span>-with-http_geoip_module - enabling geoip support  (does not work for me so i am changing it to --add-dynamic-module=…/ngx_http_geoip2_module)</span><br>
+<span>-http-log-path=/var/log/nginx/access.log - path to the log</span></p><pre><code>./configure --prefix=/etc/nginx --user=nginx --group=nginx --with-http_ssl_module --with-http_realip_module --add-dynamic-module=../ngx_http_geoip2_module  --http-log-path=/var/log/nginx
+make  
+make install
+</code></pre><p><span>I created an Nginx user - </span><code>useradd -d /etc/nginx nginx</code><span> and a directory for logging:</span></p><pre><code>mkdir /var/log/nginx/  
+chown nginx:nginx /var/log/nginx/
+</code></pre><p><span>Also, to run nginx, I need to create an initialization script - /etc/init.d/nginx. Then I enabled it at boot time.</span></p><h2 id="DNS-Zone-and-HTML-pages" data-id="DNS-Zone-and-HTML-pages"><a class="anchor hidden-xs" href="#DNS-Zone-and-HTML-pages" title="DNS-Zone-and-HTML-pages"><span class="octicon octicon-link"></span></a><span>DNS Zone and HTML pages</span></h2><p><span>For this task, I created two web pages-aaa and bbb. Both of them are located at /var/www (Figure 2).</span></p><center>
+<p><img src="https://i.imgur.com/OHYtamm.png" alt="" loading="lazy"><br>
+<span>Figure 2 - /var/www</span></p>
+</center><p><span>Then I set up two servers on Nginx as shown in Figure 3.</span></p><center>
+<p><img src="https://i.imgur.com/NyleON0.png" alt="" loading="lazy"><br>
+<span>Figure 3 - Servers configuration</span></p>
+</center><p><span>Then I created the symbolic links necessary for nginx to work:</span><br>
+<code>sudo ln -s /etc/nginx/sites-available/aaa.st12.sne21.ru /etc/nginx/sites-enabled/aaa.st12.sne21.ru</code></p><p><code>sudo ln -s /etc/nginx/sites-available/bbb.st12.sne21.ru /etc/nginx/sites-enabled/bbb.st12.sne21.ru</code></p><p><span>I checked my configuration using the </span><code>sudo nginx-t</code><span> command (Figure 4).</span></p><center>
+<p><img src="https://i.imgur.com/nBYRaHw.png" alt="" loading="lazy"><br>
+<span>Figure 4 - Checking my configuration</span></p>
+</center><p><span>It’s OK. So there are 3 web pages here - default Nginx page (Figure 5), aaa (Figure 6), bbb (Figure 7).</span></p><center>
+<p><img src="https://i.imgur.com/vkk0yF1.png" alt="" loading="lazy"><br>
+<span>Figure 5 - default Nginx page (</span><a href="http://ns.st12.sne21.ru" target="_blank" rel="noopener"><span>ns.st12.sne21.ru</span></a><span>)</span></p>
+<p><img src="https://i.imgur.com/RBSp7Hv.jpg" alt="" loading="lazy"><br>
+<span>Figure 6 - aaa page (</span><a href="http://aaa.st12.sne21.ru" target="_blank" rel="noopener"><span>aaa.st12.sne21.ru</span></a><span>)</span></p>
+<p><img src="https://i.imgur.com/G3EGoil.png" alt="" loading="lazy"><br>
+<span>Figure 7 - bbb page (</span><a href="http://bbb.st12.sne21.ru" target="_blank" rel="noopener"><span>bbb.st12.sne21.ru</span></a><span>)</span></p>
+</center><p><span>It remains only to configure the zone file, as shown in Figure 8.</span></p><center>
+<p><img src="https://i.imgur.com/aTDFkzf.png" alt="" loading="lazy"><br>
+<span>Figure 8 - Modified DNS zone file</span></p>
+</center><hr><h2 id="CURL" data-id="CURL"><a class="anchor hidden-xs" href="#CURL" title="CURL"><span class="octicon octicon-link"></span></a><span>CURL</span></h2><p><span>To display the contents of a full HTTP/1.1 session I used curl -v (Figures 9, 10).</span></p><center>
+<p><img src="https://i.imgur.com/Ej62cHj.png" alt="" loading="lazy"><br>
+<span>Figure 9 - Content of session for aaa</span></p>
+<p><img src="https://i.imgur.com/zPaR7xp.png" alt="" loading="lazy"><br>
+<span>Figure 10 - Content of session for bbb</span></p>
+</center><p><span>From </span><code>Trying 3.140.193.56:80...</code><span> to </span><code>* Mark ...</code><span> is request to Nginx server.</span><br>
+<span>First it tried to connect to host. The TCP_NODELAY option allows you to send data as fast as it arrives.</span></p><hr><blockquote>
+<p><span>Request</span></p>
+</blockquote><hr><p><code>GET / HTTP/1.1</code><span> - the main page of the site is requested.</span><br>
+<code>GET</code><span> is a method. It defines the operation to be performed with the specified resource.</span><br>
+<code>/</code><span> is URI (Uniform Resource Identifier) — the path to a specific resource.</span><br>
+<code>1.1</code><span> the is version of HTTP.</span></p><p><code>Host: bbb(or aaa).st12.sne21.ru</code><span> - this is the Host header, which is mandatory, and must be present in every request. The fact is that the conversion of a domain name to an IP address is carried out on the client side.</span></p><p><span>The User-Agent (UA) string is the information included in the HTTP header, acting on behalf of the user. For me, it is </span><code>User-Agent: curl/7.68.0</code></p><p><code>Accept: */*</code><span> -  the client can understand any MIME type.</span></p><hr><blockquote>
+<p><span>Response</span></p>
+</blockquote><hr><blockquote>
+<blockquote>
+<p><span>Headers</span></p>
+</blockquote>
+</blockquote><p><code>HTTP/1.1 200 OK</code><span> is the starting line of the response.</span></p><p><code>1.1</code><span> the is version of HTTP.</span></p><p><code>200</code><span> is the status code. </span><code>200</code><span> means that the GET method was used, and the server provides a resource with the specified identifier. If the server reports that such a resource does not exist - </span><code>404</code><span>. If the server reports that it cannot provide access to this resource because the client does not have the necessary privileges, then code </span><code>403</code><span> is used. The HTTP 1.1 specification defines 40 different HTTP codes.</span><br>
+<code>OK</code><span> is the reason phrase - text explanation of the response code.</span></p><p><span>The start line is followed by the headers, as well as the response body.</span></p><p><code>Server</code><span> header - A name for the server.</span><br>
+<code>Date</code><span> header - The date and time that the message was sent.</span></p><p><code>Content-Type</code><span> header describes the original format of the message data and any encoding applied.</span><br>
+<span>To determine the end of the response body, the value of the </span><code>Content-Length</code><span> header is used.</span><br>
+<code>Last-Modified</code><span> - The last modified date for the requested object.</span></p><p><code>Connection</code><span> - Control options for the current connection and list of hop-by-hop response fields.</span><br>
+<code>ETag</code><span> is an identifier for a specific version of a resource.</span><br>
+<code>Accept-Ranges</code><span> - what partial content range types this server supports via byte serving.</span></p><blockquote>
+<blockquote>
+<p><span>Body</span></p>
+</blockquote>
+</blockquote><p><span>There is an HTML page.</span></p><hr><h2 id="Task-2---SSLTLS" data-id="Task-2---SSLTLS"><a class="anchor hidden-xs" href="#Task-2---SSLTLS" title="Task-2---SSLTLS"><span class="octicon octicon-link"></span></a><span>Task 2 - SSL/TLS</span></h2><div class="alert alert-success">
+<ol>
+<li><span>Enable SSL/TLS and tune the various settings to make it as secure as possible 2.</span></li>
+<li><span>Describe how you created your own certificate(s) e.g. with Let’s encrypt (certbot) or self-signed and re-validate every virtual-host . Explain your security tuning process.</span></li>
+</ol>
+</div><hr><h2 id="SSL-Configuration" data-id="SSL-Configuration"><a class="anchor hidden-xs" href="#SSL-Configuration" title="SSL-Configuration"><span class="octicon octicon-link"></span></a><span>SSL Configuration</span></h2><p><span>I created a certificate with certbot as shown in Figure 11.</span></p><center>
+<p><img src="https://i.imgur.com/BYhr53j.png" alt="" loading="lazy"><br>
+<span>Figure 11 - Creating certificate for Nginx</span></p>
+</center><p><span>This command launches certbot with the --nginx plugin, using the -d option to specify the domain names for which we want to use the certificate.</span></p><p><span>Then I configured Nginx to use SSL.</span></p><blockquote>
+<p><span>To configure SSL automatically, Certbot needs to find the correct server block in the Nginx configuration (server_name).</span></p>
+</blockquote><p><span>I have already set this up correctly during the previous task.</span></p><p><span>If we don’t need to set it automatically then we need to configure the virtual host for SSL as shown in Figure 12.</span></p><center>
+<p><img src="https://i.imgur.com/QMlcvsm.png" alt="" loading="lazy"><br>
+<span>Figure 12 - Configuring a Virtual Host for SSL</span></p>
+</center><p><span>privkey.pem - the private key of the certificate.</span><br>
+<span>fullchain.pem - it combines the contents of cert.pem and chain.pem.</span></p><p><span>Now both web pages should use the HTTPS with a certbot SSL certificate (Figures 13, 14).</span></p><center>
+<p><img src="https://i.imgur.com/8T4cD6T.jpg" alt="" loading="lazy"><br>
+<span>Figure 13 - </span><a href="http://aaa.st12.sne21.ru" target="_blank" rel="noopener"><span>aaa.st12.sne21.ru</span></a></p>
+<p><img src="https://i.imgur.com/G7bOHl7.png" alt="" loading="lazy"><br>
+<span>Figure 14 - </span><a href="http://bbb.st12.sne21.ru" target="_blank" rel="noopener"><span>bbb.st12.sne21.ru</span></a></p>
+</center><p><span>Figure 15 shows the certificate</span></p><center>
+<p><img src="https://i.imgur.com/usZ7aqa.png" alt="" loading="lazy"><br>
+<span>Figure 15 - SSL certificate</span></p>
+</center><p><span>Self-signed key and certificate pair with OpenSSl can be created by command </span><code>sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt</code></p><p><span>req - specifies that we want to use X.509 certificate signing request management.</span></p><p><span>-x509 -  modifies req to make a self-signed certificate instead of CSR.</span></p><p><span>-nodes - no passphase.</span></p><p><span>-days 365 - it is valid for one year.</span></p><p><span>-newkey rsa:2048 -  generate a new certificate and a new key (RSA key that is 2048 bits long) at the same time.</span></p><p><span>-keyout - where to place the generated private key file.</span></p><p><span>-out - where to place the certificate.</span></p><p><span>Then a few questions will be asked about our server, this information will be embedded in the certificate.</span></p><p><span>I also created a strong Diffie-Hellman group for OpenSSl - </span><code>sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048</code><span>.</span></p><p><span>I added </span><code>ssl_dhparam /etc/ssl/certs/dhparam.pem;</code><span> to </span><code>/etc/nginx/snippets/ssl-params.conf</code><span>.</span></p><p><span>And then I have to do the same configuration as for certbot. But it will not be considered reliable, so the browser will report that the connection is not private (Figure 16)</span></p><center>
+<p><img src="https://i.imgur.com/YK10v2v.png" alt="" loading="lazy"><span>.</span><br>
+<span>Figure 16 - Nginx self-signed certificate warning</span></p>
+</center><p><span>This is because the certificate is not signed by one of the trusted browser certification authorities.</span></p><hr><h2 id="Secure-SSL" data-id="Secure-SSL"><a class="anchor hidden-xs" href="#Secure-SSL" title="Secure-SSL"><span class="octicon octicon-link"></span></a><span>Secure SSL</span></h2><p><span>First I tested my domains (Figures 17, 18).</span></p><center>
+<p><img src="https://i.imgur.com/dnTc2ZL.png" alt="" loading="lazy"><br>
+<span>Figure 17 - Result for aaa</span></p>
+<p><img src="https://i.imgur.com/wvTf1S1.png" alt="" loading="lazy"><br>
+<span>Figure 18 - Result for bbb</span></p>
+</center><p><span>In my opinion, this is a pretty good result, but I will try to make it better</span></p><p><span>To do this, I have added HTTP Strict Transport Security to aaa.st12.sne21.ru-ssl.conf (Figure 19).</span></p><center>
+<p><img src="https://i.imgur.com/Qcnp2ac.png" alt="" loading="lazy"><br>
+<span>Figure 19 - HTTP Strict Transport Security</span></p>
+</center><p><span>Transmitting a Strict-Transport-Secutiry header indicating to the browser that the site is only accessible via HTTPS protocol.</span></p><p><span>I have also configured Nginx for SSL (Figure 20).</span></p><center>
+<p><img src="https://i.imgur.com/TrQTwN0.png" alt="" loading="lazy"><br>
+<span>Figure 20 - Configuring Nginx for SSL</span></p>
+</center><p><code>ssl_protocols</code><span> - Specifies supported protocols.</span></p><p><code>ssl_ciphers</code><span> - Specifies the ciphers used.</span></p><p><code>ssl_prefer_server_ciphers on</code><span> - specifies that server ciphers should have higher priority than client ciphers.</span></p><p><code>ssl_stapling on</code><span> - Allows the server to attach OCSP responses, thereby reducing the page loading time for users. For this function to work, you need to specify a DNS server, which is done by the </span><code>resolver</code><span> directive.</span></p><p><code>ssl_dhparam</code><span> - To strengthen encryption, I will increase the durability of DH ciphers (4096)</span></p><p><span>Now let’s test aaa again (Figure 21)</span></p><center>
+<p><img src="https://i.imgur.com/WcgeQMl.png" alt="" loading="lazy"><br>
+<span>Figure 21 - The Best result for aaa</span></p>
+</center><hr><h2 id="Task-3---GeoIP" data-id="Task-3---GeoIP"><a class="anchor hidden-xs" href="#Task-3---GeoIP" title="Task-3---GeoIP"><span class="octicon octicon-link"></span></a><span>Task 3 - GeoIP</span></h2><div class="alert alert-success">
+<p><span>Enable GeoIP on your chosen web-server (is only NGINX capable to do this?) and show how to take advantage of it with real examples.</span></p>
+</div><hr><h2 id="Implementation" data-id="Implementation"><a class="anchor hidden-xs" href="#Implementation" title="Implementation"><span class="octicon octicon-link"></span></a><span>Implementation</span></h2><p><span>When installing Nginx, I have already installed a module to work with GeoIP. So now I have to configure Nginx to use it (Figure 22). Not only Nginx allows you to work with GeoIP - PHP can work with it either.</span></p><center>
+<p><img src="https://i.imgur.com/t7XH3Ye.png" alt="" loading="lazy"><br>
+<span>Figure 22 - Configuration of Nginx for GeoIP</span></p>
+</center><p><span>It blocks site for every county except Japan</span><br>
+<span>So now let’s test (Figure 23, 24).</span></p><center>
+<p><img src="https://i.imgur.com/VPiN5Xf.png" alt="" loading="lazy"><br>
+<span>Figure 23 - So it’s blocked</span></p>
+<p><img src="https://i.imgur.com/zrYZk0X.png" alt="" loading="lazy"><br>
+<span>Figure 24 - But still working over HTTPS</span></p>
+</center><p><span>For a full check, I need to use a VPN. So I changed my IP to Japanese (Figure 25).</span></p><center>
+<p><img src="https://i.imgur.com/NyVMW1U.png" alt="" loading="lazy"><br>
+<span>Figure 25 - Japanese IP</span></p>
+</center><p><span>Figure 26 shows that I can now access </span><a href="http://bbb.st12.sne21.ru" target="_blank" rel="noopener"><span>bbb.st12.sne21.ru</span></a><span>.</span></p><center>
+<p><img src="https://i.imgur.com/qxMwPxk.png" alt="" loading="lazy"><br>
+<span>Figure 26 - Access </span><a href="http://bbb.st12.sne21.ru" target="_blank" rel="noopener"><span>bbb.st12.sne21.ru</span></a></p>
+</center><h1 id="Section-2-Directory-server-Optional" data-id="Section-2-Directory-server-Optional"><a class="anchor hidden-xs" href="#Section-2-Directory-server-Optional" title="Section-2-Directory-server-Optional"><span class="octicon octicon-link"></span></a><span>Section 2: Directory server (Optional)</span></h1><div class="alert alert-info">
+<p><span>In this section, you will learn how to deploy and configure a directory service. More precisely deploying your server with one client. Select one of the following directory services of your choice, please research before choosing.</span><br>
+<span>➢ FreeIPA (medium)</span><br>
+<span>➢ OpenLDAP + phpLDAPadmin (medium)</span><br>
+<span>➢ MS Active Directory (large)</span></p>
+<blockquote>
+<p><span>Note: below tasks are based on FreeIPA directory service, you can also perform similar tasks with the above options.</span></p>
+</blockquote>
+</div><p><span>I am going to use FreeIPA.</span></p><h2 id="Task-1---Directory-Server-installation-and-configuration" data-id="Task-1---Directory-Server-installation-and-configuration"><a class="anchor hidden-xs" href="#Task-1---Directory-Server-installation-and-configuration" title="Task-1---Directory-Server-installation-and-configuration"><span class="octicon octicon-link"></span></a><span>Task 1 - Directory  Server installation and configuration</span></h2><div class="alert alert-success">
+<ol>
+<li><span>Get familiar with your directory server. What features and capabilities? (very short)</span></li>
+<li><span>Prepare the environment, create/use two VMs (i.e server and client)</span></li>
+<li><span>Install the directory server. you DON’T need to install the directory server from the source. (e.g. use apt-get).</span></li>
+</ol>
+<blockquote>
+<p><span>Hint: you can add FQDN for your server in the /etc/hosts file to make it resolvable, in case you don’t have access to your previews lab or DNS server.</span></p>
+</blockquote>
+<ol start="4">
+<li><span>(For FreeIPA) get a Kerberos ticket for admin and list it. Check the admin account exists in the FreeIPA server.</span></li>
+<li><span>Access/log-in to the web dashboard of FreeIPA server. Create a test user (e.g. your name) for the next task.</span></li>
+</ol>
+</div><hr><p><span>FreeIPA (from Free Identity, Policy, Audit) is an open project for creating a centralized enterprise-scale system for managing user identification, setting access policies and auditing networks. It includes the following components:</span></p><ul>
+<li><span>389 Directory Server as an LDAP server;</span></li>
+<li><span>MIT Kerberos 5.0 for Authentication and Single Sign-on;</span></li>
+<li><span>DogTag for Certificate Management;</span></li>
+<li><span>NTP;</span></li>
+<li><span>BIND and DHCP for DNS management;</span></li>
+<li><span>web-based management interface.</span></li>
+</ul><p><span>FreeIPA also uses Samba to integrate with Microsoft’s Active Directory through a trust relationship.</span></p><p><span>FreeIPA is a specialized domain controller whose goals and mechanisms are similar to Microsoft Active Directory.</span></p><p><span>Policy management is implemented based on HBAC rules (host based access control, node–level access control - describes which services are available to users on a particular registered host) and sudo rules (which commands a user can execute as root or another user).</span></p><p><span>The system also allows you to delegate various roles to users very flexibly without passing them the administrator password. For example, you can assign a special role to the user Enroll hosts, which will allow you to register hosts.</span></p><p><span>A mechanism for building a multi-level access control system has also been implemented, that is, the head of a user group can be given the authority to add new users to it.</span></p><hr><p><span>In GNS3 I installed Ubuntu Server VM. Then I made sure that all your system packages were updated by running the following commands:</span></p><pre><code>sudo apt update
+sudo apt upgrade
+</code></pre><p><span>After that, I set up my host and installed a freeipa-server, but I had a problem with kinit. So I can’t complete this task before the deadline.</span></p><hr><h2 id="References" data-id="References"><a class="anchor hidden-xs" href="#References" title="References"><span class="octicon octicon-link"></span></a><span>References</span></h2><ol>
+<li><a href="https://nginx.org/" target="_blank" rel="noopener"><span>nginx</span></a></li>
+<li><a href="https://ubuntu.com/tutorials/install-and-configure-nginx#1-overview" target="_blank" rel="noopener"><span>Install and configure Nginx</span></a></li>
+<li><a href="https://en.wikipedia.org/wiki/List_of_HTTP_header_fields" target="_blank" rel="noopener"><span>List of HTTP header fields</span></a></li>
+<li><a href="https://habr.com/ru/post/73129/" target="_blank" rel="noopener"><span>How to protect the server from visitors from unwanted countries</span></a></li>
+<li><a href="https://dev.maxmind.com/geoip?lang=en" target="_blank" rel="noopener"><span>MaxMind’s GeoIP2</span></a></li>
+<li><a href="https://www.tech-notes.net/geoip-for-nginx/" target="_blank" rel="noopener"><span>GeoIP for Nginx</span></a></li>
+<li><a href="https://www.ssllabs.com/index.html" target="_blank" rel="noopener"><span>SSL labs</span></a></li>
+<li><a href="https://medium.com/@maxime.durand.54/add-the-geoip2-module-to-nginx-f0b56e015763" target="_blank" rel="noopener"><span>Add the GeoIP2 module to NGINX</span></a></li>
+<li><a href="https://github.com/ssllabs/research/wiki/SSL-and-TLS-Deployment-Best-Practices" target="_blank" rel="noopener"><span>SSL and TLS Deployment Best Practices</span></a></li>
+<li><a href="https://2ip.ru/" target="_blank" rel="noopener"><span>my IP</span></a></li>
+<li><a href="https://www.acex.net/ru/useful_information/ISO_country_codes.php" target="_blank" rel="noopener"><span>Country code ISO</span></a></li>
+<li><a href="https://raymii.org/s/tutorials/HTTP_Strict_Transport_Security_for_Apache_NGINX_and_Lighttpd.html#toc_4" target="_blank" rel="noopener"><span>HTTP Strict Transport Security</span></a></li>
+</ol><hr><h2 id="Virtual-hosts" data-id="Virtual-hosts"><a class="anchor hidden-xs" href="#Virtual-hosts" title="Virtual-hosts"><span class="octicon octicon-link"></span></a><span>Virtual hosts</span></h2><ol>
+<li><a href="http://bbb.st12.sne21.ru/" target="_blank" rel="noopener"><span>bbb without SSL</span></a></li>
+<li><a href="https://bbb.st12.sne21.ru/" target="_blank" rel="noopener"><span>bbb with SSL</span></a></li>
+<li><a href="https://aaa.st12.sne21.ru/" target="_blank" rel="noopener"><span>aaa with SSL</span></a></li>
+<li><a href="http://aaa.st12.sne21.ru" target="_blank" rel="noopener"><span>aaa without SSL</span></a></li>
+</ol><blockquote>
+<p><span>You cannot access aaa without SSL due to the Nginx configuration. It will be automatically redirected to HTTPS.</span></p>
+</blockquote></div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+        <div class="pull-right dropdown">
+            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
+                <i class="fa fa-bars"></i>
+            </a>
+            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                <div class="toc"><ul class="nav">
+<li class=""><a href="#CIA-Lab-6---Web-Servers-and-Directory-Service" title="CIA Lab 6 - Web Servers  and Directory Service">CIA Lab 6 - Web Servers  and Directory Service</a></li>
+<li class=""><a href="#Section-1Web-Server" title="Section 1:Web Server">Section 1:Web Server</a><ul class="nav">
+<li class=""><a href="#Task-1---Install-amp-Configure-Virtual-Hosts" title="Task 1 - Install &amp; Configure Virtual Hosts">Task 1 - Install &amp; Configure Virtual Hosts</a></li>
+<li><a href="#Install" title="Install">Install</a></li>
+<li><a href="#DNS-Zone-and-HTML-pages" title="DNS Zone and HTML pages">DNS Zone and HTML pages</a></li>
+<li><a href="#CURL" title="CURL">CURL</a></li>
+<li><a href="#Task-2---SSLTLS" title="Task 2 - SSL/TLS">Task 2 - SSL/TLS</a></li>
+<li><a href="#SSL-Configuration" title="SSL Configuration">SSL Configuration</a></li>
+<li><a href="#Secure-SSL" title="Secure SSL">Secure SSL</a></li>
+<li><a href="#Task-3---GeoIP" title="Task 3 - GeoIP">Task 3 - GeoIP</a></li>
+<li><a href="#Implementation" title="Implementation">Implementation</a></li>
+</ul>
+</li>
+<li class=""><a href="#Section-2-Directory-server-Optional" title="Section 2: Directory server (Optional)">Section 2: Directory server (Optional)</a><ul class="nav">
+<li><a href="#Task-1---Directory-Server-installation-and-configuration" title="Task 1 - Directory  Server installation and configuration">Task 1 - Directory  Server installation and configuration</a></li>
+<li><a href="#References" title="References">References</a></li>
+<li class=""><a href="#Virtual-hosts" title="Virtual hosts">Virtual hosts</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+            </ul>
+        </div>
+    </div>
+    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
+        <div class="toc"><ul class="nav">
+<li class=""><a href="#CIA-Lab-6---Web-Servers-and-Directory-Service" title="CIA Lab 6 - Web Servers  and Directory Service">CIA Lab 6 - Web Servers  and Directory Service</a></li>
+<li class=""><a href="#Section-1Web-Server" title="Section 1:Web Server">Section 1:Web Server</a><ul class="nav">
+<li class=""><a href="#Task-1---Install-amp-Configure-Virtual-Hosts" title="Task 1 - Install &amp; Configure Virtual Hosts">Task 1 - Install &amp; Configure Virtual Hosts</a></li>
+<li><a href="#Install" title="Install">Install</a></li>
+<li><a href="#DNS-Zone-and-HTML-pages" title="DNS Zone and HTML pages">DNS Zone and HTML pages</a></li>
+<li><a href="#CURL" title="CURL">CURL</a></li>
+<li><a href="#Task-2---SSLTLS" title="Task 2 - SSL/TLS">Task 2 - SSL/TLS</a></li>
+<li><a href="#SSL-Configuration" title="SSL Configuration">SSL Configuration</a></li>
+<li><a href="#Secure-SSL" title="Secure SSL">Secure SSL</a></li>
+<li><a href="#Task-3---GeoIP" title="Task 3 - GeoIP">Task 3 - GeoIP</a></li>
+<li><a href="#Implementation" title="Implementation">Implementation</a></li>
+</ul>
+</li>
+<li class=""><a href="#Section-2-Directory-server-Optional" title="Section 2: Directory server (Optional)">Section 2: Directory server (Optional)</a><ul class="nav">
+<li><a href="#Task-1---Directory-Server-installation-and-configuration" title="Task 1 - Directory  Server installation and configuration">Task 1 - Directory  Server installation and configuration</a></li>
+<li><a href="#References" title="References">References</a></li>
+<li class=""><a href="#Virtual-hosts" title="Virtual hosts">Virtual hosts</a></li>
+</ul>
+</li>
+</ul>
+</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script>
+        var markdown = $(".markdown-body");
+        //smooth all hash trigger scrolling
+        function smoothHashScroll() {
+            var hashElements = $("a[href^='#']").toArray();
+            for (var i = 0; i < hashElements.length; i++) {
+                var element = hashElements[i];
+                var $element = $(element);
+                var hash = element.hash;
+                if (hash) {
+                    $element.on('click', function (e) {
+                        // store hash
+                        var hash = this.hash;
+                        if ($(hash).length <= 0) return;
+                        // prevent default anchor click behavior
+                        e.preventDefault();
+                        // animate
+                        $('body, html').stop(true, true).animate({
+                            scrollTop: $(hash).offset().top
+                        }, 100, "linear", function () {
+                            // when done, add hash to url
+                            // (default click behaviour)
+                            window.location.hash = hash;
+                        });
+                    });
+                }
+            }
+        }
+
+        smoothHashScroll();
+        var toc = $('.ui-toc');
+        var tocAffix = $('.ui-affix-toc');
+        var tocDropdown = $('.ui-toc-dropdown');
+        //toc
+        tocDropdown.click(function (e) {
+            e.stopPropagation();
+        });
+
+        var enoughForAffixToc = true;
+
+        function generateScrollspy() {
+            $(document.body).scrollspy({
+                target: ''
+            });
+            $(document.body).scrollspy('refresh');
+            if (enoughForAffixToc) {
+                toc.hide();
+                tocAffix.show();
+            } else {
+                tocAffix.hide();
+                toc.show();
+            }
+            $(document.body).scroll();
+        }
+
+        function windowResize() {
+            //toc right
+            var paddingRight = parseFloat(markdown.css('padding-right'));
+            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
+            toc.css('right', right + 'px');
+            //affix toc left
+            var newbool;
+            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+            //for ipad or wider device
+            if (rightMargin >= 133) {
+                newbool = true;
+                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+                tocAffix.css('left', left + 'px');
+            } else {
+                newbool = false;
+            }
+            if (newbool != enoughForAffixToc) {
+                enoughForAffixToc = newbool;
+                generateScrollspy();
+            }
+        }
+        $(window).resize(function () {
+            windowResize();
+        });
+        $(document).ready(function () {
+            windowResize();
+            generateScrollspy();
+        });
+
+        //remove hash
+        function removeHash() {
+            window.location.hash = '';
+        }
+
+        var backtotop = $('.back-to-top');
+        var gotobottom = $('.go-to-bottom');
+
+        backtotop.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToTop)
+                scrollToTop();
+            removeHash();
+        });
+        gotobottom.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (scrollToBottom)
+                scrollToBottom();
+            removeHash();
+        });
+
+        var toggle = $('.expand-toggle');
+        var tocExpand = false;
+
+        checkExpandToggle();
+        toggle.click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            tocExpand = !tocExpand;
+            checkExpandToggle();
+        })
+
+        function checkExpandToggle () {
+            var toc = $('.ui-toc-dropdown .toc');
+            var toggle = $('.expand-toggle');
+            if (!tocExpand) {
+                toc.removeClass('expand');
+                toggle.text('Expand all');
+            } else {
+                toc.addClass('expand');
+                toggle.text('Collapse all');
+            }
+        }
+
+        function scrollToTop() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: 0
+            }, 100, "linear");
+        }
+
+        function scrollToBottom() {
+            $('body, html').stop(true, true).animate({
+                scrollTop: $(document.body)[0].scrollHeight
+            }, 100, "linear");
+        }
+    </script>
+</body>
+
+</html>
